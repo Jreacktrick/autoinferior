@@ -1,0 +1,4 @@
+.venv/bin/activate
+venv
+venv/bin/activate
+.env
