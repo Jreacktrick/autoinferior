@@ -2,15 +2,19 @@ import os
 
 def get_files_info(working_directory, directory="."):
     full_path = os.path.join(working_directory, directory)
-    if os.path.abspath(directory) not in full_path:
+    
+    if not os.path.abspath(full_path).startswith(os.path.abspath(working_directory)):
         return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
-    if os.path.isdir(directory) == False:
+    if not os.path.isdir(full_path):
         return f'Error: "{directory}" is not a directory'
     try:
+        pathstore = []
         for path in os.listdir(full_path):
-            if os.path.isfile(path):
-                return f'{path}: {os.path.getsize(path)}, is_dir={os.path.isdir(path)}'
-    except:
-        raise Exception(f'Error:{Exception}')
+            
+            pathstore.append(f'- {path}: file_size={os.path.getsize(os.path.join(full_path,path))} bytes, is_dir={os.path.isdir(os.path.join(full_path,path))}')
+        return '\n'.join(pathstore)
+    except Exception as e:
+        return f'Error: {e}'
+        
 
     
